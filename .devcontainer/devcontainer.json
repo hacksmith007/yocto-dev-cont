@@ -1,0 +1,30 @@
+{
+    "name": "Yocto Dev Container",
+    "build": {
+        "context": "..",
+        "dockerfile": "Dockerfile"
+    },
+    "workspaceFolder": "/workspace",
+    "mounts": [
+        "source=${localEnv:HOME}/yocto,target=/workspace,type=bind",
+        "source=${localEnv:HOME}/yocto/yocto-sources,target=/workspace/yocto-sources,type=bind",
+        "source=${localEnv:HOME}/yocto/yocto-build,target=/workspace/yocto-build,type=bind",
+        "source=${localEnv:HOME}/yocto/yocto-tools,target=/workspace/yocto-tools,type=bind"
+    ],
+    "initializeCommand": "if [ ! -d \"${HOME}/yocto/yocto-sources\" ]; then mkdir -p \"${HOME}/yocto/yocto-sources\"; fi",
+    "postCreateCommand": "/usr/local/bin/entrypoint.sh",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                "ms-vscode.cpptools-extension-pack",
+                "ms-vscode.cpptools-themes",
+                "github.copilot",
+                "ms-vscode.cpptools"
+            ]
+        }
+    },
+    "remoteUser": "vscode"
+}
