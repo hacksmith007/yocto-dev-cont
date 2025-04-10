@@ -29,6 +29,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zstd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install OpenSSH client
+RUN apt-get update && apt-get install -y --no-install-recommends openssh-client \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Install and configure locales
 RUN apt-get update && apt-get install -y --no-install-recommends locales \
     && locale-gen en_US.UTF-8 \
