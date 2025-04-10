@@ -29,6 +29,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zstd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install OpenSSH client
+RUN apt-get update && apt-get install -y --no-install-recommends openssh-client \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Install and configure locales
 RUN apt-get update && apt-get install -y --no-install-recommends locales \
     && locale-gen en_US.UTF-8 \
@@ -47,9 +51,11 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+COPY setup_env /usr/local/bin/setup_env
+COPY git_mstatus /usr/local/bin/git_mstatus
+COPY git_mcheckout /usr/local/bin/git_mcheckout
+RUN chmod +x /usr/local/bin/setup_env /usr/local/bin/git_mstatus /usr/local/bin/git_mcheckout
+ENTRYPOINT ["/usr/local/bin/setup_env"]
 # Switch to non-root user
 USER $USERNAME
 
